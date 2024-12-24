@@ -12,7 +12,6 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -34,17 +33,6 @@ func init() {
 	if err != nil {
 		log.Fatal(fmt.Errorf("fatal error config file: %w", err))
 	}
-}
-
-type User struct {
-	ID        string
-	Username  string
-	FirstName string
-	LastName  string
-	Email     string
-	Age       int
-	Created   time.Time
-	Updated   time.Time
 }
 
 func main() {
