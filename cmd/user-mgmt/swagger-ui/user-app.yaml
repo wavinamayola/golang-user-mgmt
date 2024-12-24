@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: User Management API
+  description: A simple aapplication that provides a RESTful API for user management, including basic authentication, CRUD operations, and basic input validation.
+  version: 1.0.0
+
+security:
+ - BasicAuth: []
+
+tags:
+  - name: user
+
+paths:
+  /users:
+    post:
+      tags:
+        - user
+      summary: creates a user
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        201:
+          description: user created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /users/{id}:
+    get:
+      tags:
+        - user
+      summary: get user
+      operationId: getUser
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: return user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+      responses:
+        200:
+          description: update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      tags:
+        - user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      summary: delete a user
+      operationId: deleteUser
+      responses:
+        200:
+          description: deleted user
+        400:
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the response (e.g., success or error)
+        message:
+          type: object
+          description: Additional message related to the response
+        data:
+          type: string
+          description: Can be nullable
+          nullable: true
+
+    UserResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of the response (e.g., success or error)
+        message:
+          type: object
+          description: Additional message related to the response
+        data:
+          $ref: '#/components/schemas/User'
+  
+    CreateUser:
+      type: object
+      properties:
+        username:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        age:
+          type: integer
+
+    User:
+      description: saved user
+      allOf:
+        - $ref: '#/components/schemas/CreateUser'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+            created:
+              type: string
+              format: 'date-time'
+            updated:
+              type: string
+              format: 'date-time'
