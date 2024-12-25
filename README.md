@@ -22,8 +22,8 @@ Make sure you have the following installed on your system:
 ### Clone the repository
 
 ```bash
-git clone https://github.com/your-repository-url.git
-cd your-repository-name
+git clone git@github.com:wavinamayola/golang-user-mgmt.git
+cd golang-user-mgmt
 ```
 
 ### Install dependencies
